@@ -22,5 +22,5 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Read input
-        uses: ActionsDesk/issueops-action/wrappers/setup@v1.0.1
+        uses: ActionsDesk/issueops-action/wrappers/setup@v1
         id: read-input

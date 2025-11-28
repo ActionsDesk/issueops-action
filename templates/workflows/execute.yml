@@ -26,7 +26,7 @@ jobs:
 
       - name: Upload Execution Report
         id: upload-execution-report
-        uses: ActionsDesk/issueops-action/wrappers/upload-execute-report@v1.0.1
+        uses: ActionsDesk/issueops-action/wrappers/upload-execute-report@v1
         env:
           DIFFERENTIATOR: ${{ matrix.field_value }}
 
@@ -45,4 +45,4 @@ jobs:
 
       - name: Upload Execution Report
         id: upload-execution-report
-        uses: ActionsDesk/issueops-action/wrappers/upload-execute-report@v1.0.1
+        uses: ActionsDesk/issueops-action/wrappers/upload-execute-report@v1

@@ -24,9 +24,9 @@ jobs:
 
       - name: Add reports to comment
         id: add-report-comment
-        uses: ActionsDesk/issueops-action/wrappers/add-report-comment@v1.0.1
+        uses: ActionsDesk/issueops-action/wrappers/add-report-comment@v1
 
       - name: Tear down IssueOps
         id: tear-down-issueops
-        uses: ActionsDesk/issueops-action/wrappers/teardown@v1.0.1
+        uses: ActionsDesk/issueops-action/wrappers/teardown@v1
         if: always()
