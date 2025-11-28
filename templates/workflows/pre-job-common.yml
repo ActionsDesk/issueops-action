@@ -1,0 +1,26 @@
+name: IssueOps - Common Pre-Job
+
+on:
+  workflow_call:
+    outputs:
+      result:
+        description: 'Data collected by the setup logic'
+        value: ${{ jobs.run-setup-action.outputs.result }}
+
+permissions:
+  contents: read
+  issues: write
+  packages: read
+
+jobs:
+  run-setup-action:
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.read-input.outputs.result }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Read input
+        uses: ActionsDesk/issueops-action/wrappers/setup@v1.0.0
+        id: read-input

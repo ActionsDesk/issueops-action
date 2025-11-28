@@ -1,0 +1,28 @@
+version: 2
+updates:
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    groups:
+      actions:
+        patterns:
+          - '*'
+    commit-message:
+      prefix: '🆙 action'
+    labels:
+      - 'github-action :robot:'
+
+  - package-ecosystem: 'npm'
+    directory: './issueops-common-logic/'
+    schedule:
+      interval: 'monthly'
+    groups:
+      npm:
+        patterns:
+          - '*'
+    commit-message:
+      prefix: '🆙 npm'
+      include: 'scope'
+    labels:
+      - 'dependency :robot:'

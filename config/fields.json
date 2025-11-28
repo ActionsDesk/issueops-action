@@ -1,0 +1,10 @@
+[
+  {
+    "name": "field1",
+    "label": "Field 1",
+    "regex": "^[\\w\\.-]+$",
+    "matrix": false,
+    "required": true
+  }
+]
+

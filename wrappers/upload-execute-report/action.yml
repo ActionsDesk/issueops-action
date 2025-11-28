@@ -1,0 +1,22 @@
+name: 'issueops-action-upload-execute-report'
+description: 'Uploads execution reports and artifacts from the IssueOps workflow'
+
+branding:
+  icon: 'check-circle'
+  color: 'green'
+
+inputs:
+  github-token:
+    description: The GitHub token used to create an authenticated client
+    default: ${{ github.token }}
+    required: false
+  differentiator:
+    description: >
+      An optional value to help differentiate this report when running in a matrix with a single dimension.
+      This should match the sole key from the matrix.
+    required: false
+    default: ''
+
+runs:
+  using: 'node20'
+  main: '../../issueops-common-logic/dist/upload-execute-report.js'

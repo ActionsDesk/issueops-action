@@ -1,0 +1,22 @@
+name: IssueOps - Pre-Job
+
+on:
+  workflow_call:
+    inputs:
+      input:
+        description: 'Input'
+        required: true
+        type: string
+    outputs:
+      output:
+        description: 'Output'
+        value: ${{ jobs.setup.outputs.output }}
+
+permissions: {}
+
+jobs:
+  temp:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "This is a pre-job that you can customize"

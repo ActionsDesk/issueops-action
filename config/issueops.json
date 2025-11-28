@@ -1,0 +1,4 @@
+{
+    "create_comment_for_workflow_runs": true,
+    "label_during_execution": "issueops-in-progress"
+}

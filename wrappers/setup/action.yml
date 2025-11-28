@@ -1,0 +1,17 @@
+name: 'issueops-action-setup'
+description: 'Sets up the IssueOps process by parsing issue content and validating commands'
+
+branding:
+  icon: 'check-circle'
+  color: 'green'
+
+inputs:
+  github-token:
+    description: The GitHub token used to create an authenticated client
+    default: ${{ github.token }}
+    required: false
+
+runs:
+  using: 'node20'
+  main: '../../issueops-common-logic/dist/setup.js'
+

@@ -1,0 +1,17 @@
+name: 'issueops-action-add-report-comment'
+description: 'Adds a report comment to the GitHub issue'
+
+branding:
+  icon: 'check-circle'
+  color: 'green'
+
+inputs:
+  github-token:
+    description: The GitHub token used to create an authenticated client
+    default: ${{ github.token }}
+    required: false
+
+runs:
+  using: 'node20'
+  main: '../../issueops-common-logic/dist/add-report-comment.js'
+

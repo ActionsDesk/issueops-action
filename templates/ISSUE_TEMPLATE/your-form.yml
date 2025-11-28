@@ -1,0 +1,23 @@
+name: Your Form Name
+description: Your Form Description
+title: "Your Issue Title"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## **Title**
+
+  - type: textarea
+    id: field1
+    attributes:
+      label: "Field 1"
+      description: "Field 1 Description"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Explanation
+
+        1. Some explanation about how to use this IssueOps

@@ -1,0 +1,3 @@
+[
+    {  "command": "your-command", "environment": "your-environment", "report": { "type": "markdown" } }
+]

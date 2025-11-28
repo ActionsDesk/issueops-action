@@ -1,0 +1,74 @@
+name: Build release assets
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build-release:
+    name: Build and release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          fetch-depth: 0
+          lfs: true
+        
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: issueops-common-logic/package-lock.json
+
+      - name: Install Dependencies
+        id: install
+        working-directory: issueops-common-logic
+        run: npm ci
+
+      - name: Build dist/ Directory
+        id: build
+        working-directory: issueops-common-logic
+        run: npm run all
+
+      - name: Git Version
+        id: version
+        uses: codacy/git-version@877bb11b7a2ee44dcd7c0a03882c7037356e64e9  # 2.8.6
+        with:
+          release-branch: main
+
+      - name: Create release asset
+        run: |
+          # Copy workflow template files to .github/workflows
+          mkdir -p .github/workflows
+          cp templates/workflows/* .github/workflows/
+
+          # Copy issue template files to .github/ISSUE_TEMPLATE
+          mkdir -p .github/ISSUE_TEMPLATE
+          rm -rf .github/ISSUE_TEMPLATE/*
+          cp templates/ISSUE_TEMPLATE/* .github/ISSUE_TEMPLATE/
+          
+          # Create zip file
+          zip -r /tmp/template.zip LICENSE README.md .github/ config/ -x ".github/workflows/z-*.*"
+
+      - name: Create Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        id: create_release
+        run: gh release create -t "Release ${tag_name}" ${tag_name} /tmp/template.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ steps.version.outputs.version }}  # Use the version determined by Git Version
+          

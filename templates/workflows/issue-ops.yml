@@ -1,0 +1,41 @@
+name: IssueOps - Trigger Workflow
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read   # for reading config
+  packages: read   # to get actions workflows
+  issues:   write  # required to write updates to the issues
+  actions:  write  # required for uploading report artifacts.
+  
+jobs:
+  pre-job-common:
+    uses: ./.github/workflows/pre-job-common.yml
+    if: ${{ startsWith(github.event.comment.body,'/') }}
+    secrets: inherit
+  pre-job-custom:
+    needs: ['pre-job-common']
+    uses: ./.github/workflows/pre-job-custom.yml
+    secrets: inherit
+    with:
+      input: ${{ needs.pre-job-common.outputs.result }}
+  execute:
+    needs: ['pre-job-common', 'pre-job-custom']
+    uses: ./.github/workflows/execute.yml
+    secrets: inherit
+    with:
+      input: ${{ needs.pre-job-common.outputs.result }}
+  post-job-custom:
+    needs: ['pre-job-common', 'pre-job-custom', 'execute']
+    uses: ./.github/workflows/post-job-custom.yml
+    secrets: inherit
+    if: ${{ always() && startsWith(github.event.comment.body,'/') }}
+    with:
+      needs: ${{ toJson(needs) }}
+      input: ${{ needs.pre-job-common.outputs.result }}
+  post-job-common:
+    needs: ['post-job-custom']
+    uses: ./.github/workflows/post-job-common.yml
+    if: ${{ always() && startsWith(github.event.comment.body,'/') }}

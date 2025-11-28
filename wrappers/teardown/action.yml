@@ -1,0 +1,17 @@
+name: 'issueops-action-tear-down'
+description: 'Tears down the IssueOps process and performs cleanup operations'
+
+branding:
+  icon: 'check-circle'
+  color: 'green'
+
+inputs:
+  github-token:
+    description: The GitHub token used to create an authenticated client
+    default: ${{ github.token }}
+    required: false
+
+runs:
+  using: 'node20'
+  main: '../../issueops-common-logic/dist/teardown.js'
+

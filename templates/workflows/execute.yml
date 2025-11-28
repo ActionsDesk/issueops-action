@@ -1,0 +1,48 @@
+name: Execute
+
+on:
+  workflow_call:
+    inputs:
+      input:
+        description: 'Input'
+        required: true
+        type: string
+
+jobs:
+  example-matrix:
+    if: ${{ fromJson(inputs.input).command.command == 'your-command' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        field_value: ${{ fromJson(inputs.input).matrix }}
+    steps:
+      - name: create report
+        id: create-report
+        env:
+          mvalue: ${{ matrix.field_value }}
+        run: |
+          jq --null-input --arg markdown "${mvalue}" '{ "markdown": $markdown }' > execute-report.json          
+
+      - name: Upload Execution Report
+        id: upload-execution-report
+        uses: ActionsDesk/issueops-action/wrappers/upload-execute-report@v1.0.0
+        env:
+          DIFFERENTIATOR: ${{ matrix.field_value }}
+
+  example-simple:
+    needs: ["example-matrix"]
+    if: ${{ fromJson(inputs.input).command.command == 'your-command' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: create report
+        id: create-report
+        env:
+          cvalue: ${{ fromJson(inputs.input).command.command }}
+        run: |
+          mvalue=$(echo -e "## My Command: ${cvalue}\n\nWas executed")
+          jq --null-input --arg markdown "${mvalue}" '{ "markdown": $markdown }' > execute-report.json          
+
+      - name: Upload Execution Report
+        id: upload-execution-report
+        uses: ActionsDesk/issueops-action/wrappers/upload-execute-report@v1.0.0

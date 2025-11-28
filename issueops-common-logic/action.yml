@@ -1,0 +1,22 @@
+name: 'Issue Ops Setup Action'
+description: 'Action to prepare the environment for Issue Ops'
+author: '@digimangos'
+inputs:
+  github_token:
+    required: true
+    description: 'The GitHub token to use for authentication'
+  owner:
+    required: true
+    description: 'The repository owner'
+  repo: 
+    required: true
+    description: 'The name of the repository'
+  issue_number:
+    required: true
+    description: 'The number of the issue triggering this request'
+  field_config:
+    required: false
+    description: 'The configuration for the fields to be used'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

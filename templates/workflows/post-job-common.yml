@@ -1,0 +1,32 @@
+name: IssueOps - Common Post-Job
+
+on:
+  workflow_call:
+  
+permissions:
+  contents: read
+  issues: write
+  packages: read
+  
+jobs:
+  run-setup-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download report data
+        uses: actions/download-artifact@v4
+        with:
+          path: execute-reports
+          pattern: execute-report-*
+          merge-multiple: false
+
+      - name: Add reports to comment
+        id: add-report-comment
+        uses: ActionsDesk/issueops-action/wrappers/add-report-comment@v1.0.0
+
+      - name: Tear down IssueOps
+        id: tear-down-issueops
+        uses: ActionsDesk/issueops-action/wrappers/teardown@v1.0.0
+        if: always()

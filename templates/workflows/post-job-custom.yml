@@ -1,0 +1,22 @@
+name: IssueOps - Post-Job
+
+on:
+  workflow_call:
+    inputs:
+      input:
+        description: 'Input'
+        required: true
+        type: string
+      needs:
+        description: 'Needs'
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  temp:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "This is a post-job that you can customize"
