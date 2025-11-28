@@ -49,6 +49,7 @@ jobs:
         uses: codacy/git-version@877bb11b7a2ee44dcd7c0a03882c7037356e64e9  # 2.8.6
         with:
           release-branch: main
+          prefix: 'v'
 
       - name: Create release asset
         run: |
