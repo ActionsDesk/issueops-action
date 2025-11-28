@@ -153,7 +153,7 @@ Following this step, you should call the framework's `uploadExecuteReport` wrapp
 ```yaml
       - name: Upload Execution Report
         id: upload-execution-report
-        uses: ActionsDesk/issueops-action/wrappers/upload-execute-report@v1.0.0
+        uses: ActionsDesk/issueops-action/wrappers/upload-execute-report@v1.0.1
         with:
           differentiator: ${{ needs.manage-inputs.outputs.source_repo }}
 ```
@@ -215,28 +215,28 @@ The IssueOps Framework provides several wrapper actions that can be used directl
 
 ```yaml
 - name: Setup IssueOps
-  uses: ActionsDesk/issueops-action/wrappers/setup@v1.0.0
+  uses: ActionsDesk/issueops-action/wrappers/setup@v1.0.1
 ```
 
 ### Upload Execution Report Action
 
 ```yaml
 - name: Upload Execution Report
-  uses: ActionsDesk/issueops-action/wrappers/upload-execute-report@v1.0.0
+  uses: ActionsDesk/issueops-action/wrappers/upload-execute-report@v1.0.1
 ```
 
 ### Add Report Comment Action
 
 ```yaml
 - name: Add Report Comment
-  uses: ActionsDesk/issueops-action/wrappers/add-report-comment@v1.0.0
+  uses: ActionsDesk/issueops-action/wrappers/add-report-comment@v1.0.1
 ```
 
 ### Teardown Action
 
 ```yaml
 - name: Teardown IssueOps
-  uses: ActionsDesk/issueops-action/wrappers/teardown@v1.0.0
+  uses: ActionsDesk/issueops-action/wrappers/teardown@v1.0.1
 ```
 
 All actions accept an optional `github-token` input that defaults to `${{ github.token }}` if not specified.
