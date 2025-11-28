@@ -63,7 +63,7 @@ jobs:
           cp templates/ISSUE_TEMPLATE/* .github/ISSUE_TEMPLATE/
           
           # Create zip file
-          zip -r /tmp/template.zip LICENSE README.md .github/ config/ -x ".github/workflows/z-*.*"
+          zip -r /tmp/template.zip LICENSE README.md .github/ISSUE_TEMPLATE .github/workflows config/ -x ".github/workflows/z-*.*"
 
       - name: Create Release
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
