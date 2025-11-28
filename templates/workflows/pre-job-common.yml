@@ -19,7 +19,7 @@ jobs:
       result: ${{ steps.read-input.outputs.result }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Read input
         uses: ActionsDesk/issueops-action/wrappers/setup@v1
