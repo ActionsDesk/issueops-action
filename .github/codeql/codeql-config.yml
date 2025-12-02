@@ -1,0 +1,10 @@
+name: "CodeQL config"
+
+paths:
+  - issueops-common-logic
+  - .github/workflows
+paths-ignore:
+  - src/node_modules
+  - issueops-common-logic/dist
+  - issueops-common-logic/__tests__
+  - '**/*.test.js'
