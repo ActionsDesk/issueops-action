@@ -18,5 +18,5 @@ inputs:
     required: false
     description: 'The configuration for the fields to be used'
 runs:
-  using: 'node12'
+  using: 'node24'
   main: 'dist/index.js'
