@@ -1,3 +1,5 @@
+import { jest, describe, test, it, expect, beforeEach } from '@jest/globals'
+
 // Mock @actions/glob before any imports to avoid constants issues
 jest.mock('@actions/glob', () => ({
   create: jest.fn()
@@ -12,7 +14,6 @@ jest.mock('fs', () => ({
 
 import { ReportConfig } from '../src/types/config.d'
 import { MissingMarkdownAttributeError } from '../src/types/errors'
-import { DeepMockProxy, mockDeep } from 'jest-mock-extended'
 import * as glob from '@actions/glob'
 import * as fs from 'fs'
 import {
@@ -102,13 +103,19 @@ describe('generateMarkdownTable', () => {
 })
 
 describe('getExecuteReportFiles', () => {
-  let mockGlobber: DeepMockProxy<glob.Globber>
+  let mockGlobber: {
+    glob: jest.Mock<(...args: unknown[]) => Promise<unknown>>
+    getSearchPaths: jest.Mock
+  }
 
   beforeEach(() => {
     jest.clearAllMocks()
-    mockGlobber = mockDeep<glob.Globber>()
+    mockGlobber = {
+      glob: jest.fn<(...args: unknown[]) => Promise<unknown>>(),
+      getSearchPaths: jest.fn<() => string[]>()
+    }
     ;(glob.create as jest.MockedFunction<typeof glob.create>).mockResolvedValue(
-      mockGlobber
+      mockGlobber as unknown as glob.Globber
     )
   })
 

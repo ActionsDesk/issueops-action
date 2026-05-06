@@ -1,6 +1,6 @@
+import { jest, describe, test, expect, beforeEach } from '@jest/globals'
 import { identifyJobId } from '../src/job-identifier'
 import { Octokit } from '@octokit/rest'
-import { mockDeep, DeepMockProxy } from 'jest-mock-extended'
 import * as fs from 'fs'
 
 jest.mock('../src/utils/wait', () => ({
@@ -8,12 +8,26 @@ jest.mock('../src/utils/wait', () => ({
   default: async () => Promise.resolve(console.log('Dummy wait'))
 }))
 
+function createMockOctokit(): Octokit & {
+  paginate: jest.Mock<(...args: unknown[]) => Promise<unknown>>
+} {
+  return {
+    rest: {
+      actions: {
+        listJobsForWorkflowRunAttempt: 'listJobsForWorkflowRunAttempt'
+      }
+    },
+    paginate: jest.fn<(...args: unknown[]) => Promise<unknown>>()
+  } as unknown as Octokit & {
+    paginate: jest.Mock<(...args: unknown[]) => Promise<unknown>>
+  }
+}
+
 describe('identify', () => {
-  let github: DeepMockProxy<Octokit>
+  let github: ReturnType<typeof createMockOctokit>
 
   beforeEach(() => {
-    // Create a mock Octokit instance
-    github = mockDeep<Octokit>()
+    github = createMockOctokit()
   })
 
   test('should return the correct run ID', async () => {

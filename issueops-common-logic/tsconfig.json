@@ -2,6 +2,8 @@
   "compilerOptions": {
     "target": "ES6",
     "module": "CommonJS",
+    "moduleResolution": "node10",
+    "ignoreDeprecations": "6.0",
     "outDir": "./lib",
     "rootDir": ".",
     "strict": true,

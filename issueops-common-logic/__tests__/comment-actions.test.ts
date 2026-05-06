@@ -1,5 +1,4 @@
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-
+import { jest, describe, it, expect, beforeEach } from '@jest/globals'
 import { Octokit } from '@octokit/rest'
 import { Context } from '@actions/github/lib/context'
 import {
@@ -9,58 +8,75 @@ import {
   createWorkflowStartComment,
   removeLabelFromIssue
 } from '../src/comment-actions'
-import { mockDeep, DeepMockProxy } from 'jest-mock-extended'
-import {
-  PayloadRepository,
-  WebhookPayload
-} from '@actions/github/lib/interfaces'
 import { IssueLabelAlreadyAssignedError } from '../src/types/errors'
 
+function createMockOctokit(): Octokit & {
+  rest: {
+    issues: {
+      createComment: jest.Mock
+      addLabels: jest.Mock
+      removeLabel: jest.Mock
+    }
+  }
+  paginate: jest.Mock<(...args: unknown[]) => Promise<unknown>>
+} {
+  return {
+    rest: {
+      issues: {
+        createComment: jest
+          .fn<() => Promise<Record<string, unknown>>>()
+          .mockResolvedValue({}),
+        addLabels: jest
+          .fn<() => Promise<Record<string, unknown>>>()
+          .mockResolvedValue({}),
+        removeLabel: jest
+          .fn<() => Promise<Record<string, unknown>>>()
+          .mockResolvedValue({})
+      }
+    },
+    paginate: jest.fn<(...args: unknown[]) => Promise<unknown>>()
+  } as unknown as Octokit & {
+    rest: {
+      issues: {
+        createComment: jest.Mock
+        addLabels: jest.Mock
+        removeLabel: jest.Mock
+      }
+    }
+    paginate: jest.Mock<(...args: unknown[]) => Promise<unknown>>
+  }
+}
+
+function createMockContext(): Context {
+  return {
+    serverUrl: 'https://github.com',
+    runId: 1234,
+    repo: { owner: 'i-am-the-owner', repo: 'my-repo' },
+    payload: {
+      repository: {
+        owner: { login: 'i-am-the-owner' },
+        name: 'my-repo'
+      },
+      issue: { number: 1 }
+    }
+  } as unknown as Context
+}
+
 describe('comment-actions tests', () => {
-  let github: DeepMockProxy<Octokit>
-  let context: DeepMockProxy<Context>
+  let github: ReturnType<typeof createMockOctokit>
+  let context: Context
 
   beforeEach(() => {
-    // Prepare mock objects
-    github = mockDeep<Octokit>()
-    context = mockDeep<Context>()
-    context.serverUrl = 'https://github.com'
-    context.payload = context.payload || mockDeep<WebhookPayload>()
-    context.payload.repository =
-      context.payload.repository || mockDeep<PayloadRepository>()
-    Object.defineProperty(context.payload.repository, 'name', {
-      value: context.payload.repository.name,
-      configurable: true,
-      writable: true
-    })
-    context.payload.issue =
-      context.payload.issue ||
-      (mockDeep<{
-        [key: string]: any
-        number: number
-        html_url?: string | undefined
-        body?: string | undefined
-      }>() as {
-        [key: string]: any
-        number: number
-        html_url?: string | undefined
-        body?: string | undefined
-      })
-
-    context.payload.repository.owner.login = 'i-am-the-owner'
-    context.payload.repository.name = 'my-repo'
-    context.payload.issue.number = 1
-    context.runId = 1234
-    context.repo.owner = context.payload.repository.owner.login
-    context.repo.repo = context.payload.repository.name
+    github = createMockOctokit()
+    context = createMockContext()
   })
 
   describe('createWorkflowStartComment', () => {
     it('should create a comment', async () => {
       await createWorkflowStartComment(github, context)
       expect(github.rest.issues.createComment).toHaveBeenCalledWith({
-        owner: context.payload.repository?.owner.login,
-        repo: context.payload.repository?.name,
+        owner: context.payload.repository!.owner.login,
+        repo: context.payload.repository!.name,
         issue_number: context.payload.issue?.number ?? 0,
         body: `🟢 IssueOps workflow started: [1234](https://github.com/i-am-the-owner/my-repo/actions/runs/1234)`
       })
@@ -70,8 +86,8 @@ describe('comment-actions tests', () => {
       const message = 'My warning message'
       await createWarningComment(github, context, message)
       expect(github.rest.issues.createComment).toHaveBeenCalledWith({
-        owner: context.payload.repository?.owner.login,
-        repo: context.payload.repository?.name,
+        owner: context.payload.repository!.owner.login,
+        repo: context.payload.repository!.name,
         issue_number: context.payload.issue?.number ?? 0,
         body: `⚠️ ${message}`
       })
@@ -82,8 +98,8 @@ describe('comment-actions tests', () => {
     it('should create a comment', async () => {
       await createWorkflowEndComment(github, context)
       expect(github.rest.issues.createComment).toHaveBeenCalledWith({
-        owner: context.payload.repository?.owner.login,
-        repo: context.payload.repository?.name,
+        owner: context.payload.repository!.owner.login,
+        repo: context.payload.repository!.name,
         issue_number: context.payload.issue?.number ?? 0,
         body: `🔴 IssueOps workflow completed: [1234](https://github.com/i-am-the-owner/my-repo/actions/runs/1234)`
       })
@@ -97,8 +113,8 @@ describe('comment-actions tests', () => {
       await addLabelToIssue(github, context, 'bug')
 
       expect(github.rest.issues.addLabels).toHaveBeenCalledWith({
-        owner: context.payload.repository?.owner.login,
-        repo: context.payload.repository?.name,
+        owner: context.payload.repository!.owner.login,
+        repo: context.payload.repository!.name,
         issue_number: context.payload.issue?.number ?? 0,
         labels: ['bug']
       })

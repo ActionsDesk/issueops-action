@@ -18,5 +18,5 @@ inputs:
     default: ''
 
 runs:
-  using: 'node20'
+  using: 'node24'
   main: '../../issueops-common-logic/dist/upload-execute-report.js'
