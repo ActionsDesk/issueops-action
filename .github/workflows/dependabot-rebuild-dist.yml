@@ -5,12 +5,11 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
-      - "**/package.json"
-      - "**/package-lock.json"
-      - "**/npm-shrinkwrap.json"
+      - "issueops-common-logic/package.json"
+      - "issueops-common-logic/package-lock.json"
+      - "issueops-common-logic/npm-shrinkwrap.json"
 permissions:
   contents: write
-  pull-requests: read
 
 concurrency:
   group: dependabot-rebuild-dist-${{ github.event.pull_request.number }}
