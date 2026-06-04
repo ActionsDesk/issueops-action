@@ -2,13 +2,12 @@
 name: Dependabot Rebuild Dist
 
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize, reopened]
     paths:
       - "**/package.json"
       - "**/package-lock.json"
       - "**/npm-shrinkwrap.json"
-
 permissions:
   contents: write
   pull-requests: read
