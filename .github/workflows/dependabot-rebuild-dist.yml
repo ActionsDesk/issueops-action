@@ -37,6 +37,7 @@ jobs:
           cache: npm
           cache-dependency-path: issueops-common-logic/package-lock.json
       - name: Install dependencies
+        working-directory: issueops-common-logic
         run: |
           if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then
             npm ci
@@ -45,7 +46,8 @@ jobs:
           fi
 
       - name: Build project
-        run: npm run build
+        working-directory: issueops-common-logic
+        run: npm run bundle
 
       - name: Commit rebuilt dist
         run: |
