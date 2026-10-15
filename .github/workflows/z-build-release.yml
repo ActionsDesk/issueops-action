@@ -45,6 +45,7 @@ jobs:
         run: npm run all
 
       - name: Git Version
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         id: version
         uses: codacy/git-version@877bb11b7a2ee44dcd7c0a03882c7037356e64e9  # 2.8.6
         with:
@@ -52,6 +53,7 @@ jobs:
           prefix: 'v'
 
       - name: Create release asset
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           # Copy workflow template files to .github/workflows
           mkdir -p .github/workflows
