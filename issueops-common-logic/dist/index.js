@@ -69986,7 +69986,7 @@ function createWorkflowStartComment(github, context) {
 }
 function createWorkflowEndComment(github, context) {
     return __awaiter(this, void 0, void 0, function* () {
-        const body = `🏁 IssueOps workflow completed: [${context.runId}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`;
+        const body = `⏹️ IssueOps workflow completed: [${context.runId}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`;
         yield createWorkflowComment(github, context, body);
     });
 }

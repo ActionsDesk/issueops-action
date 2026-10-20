@@ -27,7 +27,7 @@ export async function createWorkflowEndComment(
   github: Octokit,
   context: Context
 ): Promise<void> {
-  const body = `🏁 IssueOps workflow completed: [${context.runId}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`
+  const body = `⏹️ IssueOps workflow completed: [${context.runId}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`
   await createWorkflowComment(github, context, body)
 }
 
