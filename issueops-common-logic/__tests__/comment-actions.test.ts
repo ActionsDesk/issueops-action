@@ -78,7 +78,7 @@ describe('comment-actions tests', () => {
         owner: context.payload.repository!.owner.login,
         repo: context.payload.repository!.name,
         issue_number: context.payload.issue?.number ?? 0,
-        body: `🟢 IssueOps workflow started: [1234](https://github.com/i-am-the-owner/my-repo/actions/runs/1234)`
+        body: `▶️ IssueOps workflow started: [1234](https://github.com/i-am-the-owner/my-repo/actions/runs/1234)`
       })
     })
 
@@ -101,7 +101,7 @@ describe('comment-actions tests', () => {
         owner: context.payload.repository!.owner.login,
         repo: context.payload.repository!.name,
         issue_number: context.payload.issue?.number ?? 0,
-        body: `🔴 IssueOps workflow completed: [1234](https://github.com/i-am-the-owner/my-repo/actions/runs/1234)`
+        body: `🏁 IssueOps workflow completed: [1234](https://github.com/i-am-the-owner/my-repo/actions/runs/1234)`
       })
     })
   })
